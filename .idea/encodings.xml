@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$/../enalquiler.com/enalquiler.com/app/config/config_pre.yml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../enalquiler.com/enalquiler.com/app/config/config_staging.yml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../enalquiler.com/enalquiler.com/app/config/config_staging2.yml" charset="UTF-8" />
+  </component>
+</project>

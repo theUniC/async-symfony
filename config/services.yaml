@@ -10,18 +10,44 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $loop: '@event_loop'
+            RigorGuild\DomainModel\Hotels $hotels: '@RigorGuild\Infrastructure\Persistence\DoctrineOrmHotels'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        resource: '../src/App/*'
+        exclude: '../src/App/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,AsyncKernel.php,PromisedHttpKernel.php,PromisedKernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
-        resource: '../src/Controller'
+        resource: '../src/App/Controller'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    promised_http_kernel:
+        class: App\PromisedHttpKernel
+        public: true
+        arguments:
+            - '@event_dispatcher'
+            - '@controller_resolver'
+            - '@request_stack'
+            - '@argument_resolver'
+        tags:
+            - container.hot_path
+    event_loop:
+        class: React\EventLoop\LoopInterface
+        synthetic: true
+        public: true
+    command_handlers:
+        namespace: RigorGuild\Command\
+        resource: '%kernel.project_dir%/src/RigorGuild/Command/*CommandHandler.php'
+        tags:
+            - messenger.message_handler
+    infrastructure:
+        namespace: RigorGuild\Infrastructure\
+        resource: '%kernel.project_dir%/src/RigorGuild/Infrastructure'
+    React\MySQL\Factory: ~

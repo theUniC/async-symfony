@@ -1,0 +1,10 @@
+RigorGuild\DomainModel\Hotel:
+  type: entity
+  table: hotels
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: NONE
+  fields:
+    name: string
